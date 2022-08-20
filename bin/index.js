@@ -7,11 +7,24 @@ const dir = process.cwd();
 
 const { args, isAll, isList, isDevelopment } = parse();
 
-if (!isAll && !isList && !isDevelopment) {
+let files = fs.readdirSync(dir);
+let output = "";
+
+if (!isAll) {
   // 排除以 . 開頭的文件
-  let files = fs.readdirSync(dir);
   files = files.filter((file) => file.indexOf(".") !== 0);
-  let output = "";
-  files.forEach((file) => (output += file + "             "));
-  console.log(output);
 }
+
+if (!isList) {
+  files.forEach((file) => (output += file + "             "));
+} else {
+  files.forEach((file, index) => {
+    if (index === files.length - 1) {
+      output += file;
+    } else {
+      output += file + "\n";
+    }
+  });
+}
+
+console.log(output);
