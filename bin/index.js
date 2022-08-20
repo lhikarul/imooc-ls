@@ -2,6 +2,6 @@
 
 const parse = require("./parseArgs");
 
-const { args, isAll, isList } = parse();
+const { args, isAll, isList, isDevelopment } = parse();
 
-console.log(args, isAll, isList);
+console.log(args, isAll, isList, isDevelopment);
