@@ -4,10 +4,11 @@ const fs = require("fs");
 const parse = require("./parseArgs");
 const auth = require("./auth");
 const getFileType = require("./getFileType");
+const getFileUser = require("./getFileUser");
 
 const dir = process.cwd();
 
-const { args, isAll, isList, isDevelopment } = parse();
+const { isAll, isList } = parse();
 
 let files = fs.readdirSync(dir);
 let output = "";
@@ -25,11 +26,12 @@ if (!isList) {
     const mode = stat.mode;
     const authString = auth(mode);
     const fileType = getFileType(mode);
+    const fileUser = getFileUser(stat);
 
     if (index === files.length - 1) {
-      output += fileType + authString + "\t" + file;
+      output += fileType + authString + "\t" + fileUser + "\t" + file;
     } else {
-      output += fileType + authString + "\t" + file + "\n";
+      output += fileType + authString + "\t" + fileUser + "\t" + file + "\n";
     }
   });
 }
