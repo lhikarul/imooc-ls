@@ -2,6 +2,8 @@
 
 const fs = require("fs");
 const parse = require("./parseArgs");
+const auth = require("./auth");
+const getFileType = require("./getFileType");
 
 const dir = process.cwd();
 
@@ -19,10 +21,15 @@ if (!isList) {
   files.forEach((file) => (output += file + "             "));
 } else {
   files.forEach((file, index) => {
+    const stat = fs.statSync(file);
+    const mode = stat.mode;
+    const authString = auth(mode);
+    const fileType = getFileType(mode);
+
     if (index === files.length - 1) {
-      output += file;
+      output += fileType + authString + "\t" + file;
     } else {
-      output += file + "\n";
+      output += fileType + authString + "\t" + file + "\n";
     }
   });
 }
